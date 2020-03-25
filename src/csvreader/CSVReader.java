@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import ml_wine.DataSet;
 
 public class CSVReader {
     
@@ -12,25 +13,33 @@ public class CSVReader {
     String line = "";
     String cvsSplitBy=";";
     String csvFile;
-    double[][] dataSet;
-    //String csvFile="winequality-red";
+    DataSet dataSet;
+   
     
     public CSVReader(String nameFile){
         this.csvFile =  nameFile;
-        dataSet = new double[1600][12];
+        dataSet = new DataSet(1600, 12);      
         read();
     }
     private void read() {     
         try {
             br = new BufferedReader(new FileReader(csvFile));
+            int j = 0;
             while ((line = br.readLine()) != null) {
-                
-                // use comma as separator
-                String[] dataLine = line.split(cvsSplitBy);
-                for (String data : dataLine) {
-                    if(isNumeric(data))
-                }
+                //separador ; de cada dato
+                String[] dataLine = line.split(cvsSplitBy);           
+                for (int i = 0; i < dataLine.length; i++) {
+                    
+                    //me aseguro que dato sea un numero, evitando encabezados o cosas raras
+                    if(isNumeric(dataLine[i])){
+                        dataSet.addData(j, i, Double.parseDouble(dataLine[i]));
+                        System.out.println("guardando.."+dataLine[i]);                                                   
+                    }                  
+                }             
+                j++;                  
             }
+            
+            dataSet.printDataSet();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -47,13 +56,13 @@ public class CSVReader {
         }
 
     }
-    private static boolean isNumeric(String cadena){
+    private boolean isNumeric(String cadena){
 	try {
-		Integer.parseInt(cadena);
+		Double.parseDouble(cadena);
 		return true;
-	} catch (NumberFormatException nfe){
+	} catch (NumberFormatException x){
 		return false;
 	}
-}
-
+    }
+     
 }
