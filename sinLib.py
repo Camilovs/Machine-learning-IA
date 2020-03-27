@@ -15,7 +15,7 @@ def predictDatos(matrix_coef,test):
     x_test =test
     
     for i in range(11):
-        for j in range (8):
+        for j in range (320):
             x_test[i+1][j]=(x_test[i+1][j]-min[i])/(max[i]-min[i])
     x_test=np.matrix(x_test)
     Y1=np.matmul( matrix_coef.T , x_test)   
@@ -73,7 +73,7 @@ for i in range(dimension_data[0]):
 
 #matriz de unos
 #entrena con 1591 set de datos
-matrix_ones=np.ones((1591,1))
+matrix_ones=np.ones((1279,1))
 #b=np.matrix(x_train)
 
 #matriz de datos de entrenamiento
