@@ -54,7 +54,7 @@ for i in range(dimension_data[0]):
 #print(data_train)
 
 #matriz de unos
-matrix_ones=np.ones((1599,1))
+matrix_ones=np.ones((1591,1))
 #b=np.matrix(x_train)
 
 #matriz de datos de entrenamiento
