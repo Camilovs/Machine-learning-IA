@@ -9,21 +9,38 @@ import numpy as np
 from numpy.linalg import inv
 
 
-def predictDatos(matrix_coef):
+def predictDatos(matrix_coef,test):
     
     #VALORES PARA TESTEAR (el primer valor 1 es por defecto, no se puede modificar!)
-    x_test = [[1], [7.4], [0.7], [0.0], [1.9], [0.076], [11.0], [34.0], 
-              [0.9978], [3.51], [0.56], [9.4]]
+    x_test =test
     
     for i in range(11):
-        x_test[i+1][0]=(x_test[i+1][0]-min[i])/(max[i]-min[i])
+        for j in range (8):
+            x_test[i+1][j]=(x_test[i+1][j]-min[i])/(max[i]-min[i])
     x_test=np.matrix(x_test)
     Y1=np.matmul( matrix_coef.T , x_test)   
     print(Y1*(max[-1]-min[-1])+min[-1])
     
     
     
+predict= pd.read_csv("predict.csv")
 data = pd.read_csv("winequality.csv")
+
+fixed=predict["fixed acidity"].values
+volatile=predict["volatile acidity"].values
+citric=predict["citric acid"].values
+residual=predict["residual sugar"].values
+chlorides=predict["chlorides"].values
+free=predict["free sulfur dioxide"].values
+total=predict["total sulfur dioxide"].values
+density=predict["density"].values
+pH=predict["pH"].values
+sulphates=predict["sulphates"].values
+alcohol=predict["alcohol"].values
+unos=[1,1,1,1,1,1,1,1]
+x_test2=[unos,fixed.tolist(),volatile.tolist(),citric.tolist(),residual.tolist(),chlorides.tolist(),free.tolist(),total.tolist(),density.tolist(),pH.tolist(),sulphates.tolist(),alcohol.tolist()]
+print(x_test2)
+
 #valores maximos de cada columna
 max= [data[c].max() for c in data.columns] 
 #valores minimos de cada columna
@@ -44,7 +61,7 @@ for c in data.columns:
 data_values = data.values
 data_train_values=[]
 out_train_values=[]
-#dimensions of data set (1599,12)
+#dimensions of data set (1591,12)
 dimension_data=data.shape
 
 for i in range(dimension_data[0]):                      
@@ -54,6 +71,7 @@ for i in range(dimension_data[0]):
 #print(data_train)
 
 #matriz de unos
+#entrena con 1591 set de datos
 matrix_ones=np.ones((1591,1))
 #b=np.matrix(x_train)
 
@@ -72,6 +90,7 @@ matrix_inversa=np.linalg.inv(np.matmul( xtrain_matrixT , xtrain_matrix ))
 f=np.matmul( matrix_inversa , xtrain_matrixT )
 matrix_coeficientes=np.matmul( f , out_train_matrix)    
 
-predictDatos(matrix_coeficientes)
+predictDatos(matrix_coeficientes,x_test2)
+
 
     
