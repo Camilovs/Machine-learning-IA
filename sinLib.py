@@ -7,8 +7,23 @@ Created on Thu Mar 26 16:58:07 2020
 import pandas as pd 
 import numpy as np
 from numpy.linalg import inv
+from pandas import ExcelWriter
 
-
+def escribir(matriz,reales):
+    r=reales;
+    lista=[]
+    i=0
+    while(i<320):
+        lista+=[matriz[0][i]]
+        i=i+1    
+    
+    df=pd.DataFrame({'Real': reales,
+                   'Machine Learning': lista,
+                   })
+    df = df[['Real', 'Machine Learning']]
+    writer = ExcelWriter('/Users/56992/Desktop/Utal/8/ia/Machine-learning-IA/reporte.xlsx')
+    df.to_excel(writer, 'datos',index=False)
+    writer.save()
 def predictDatos(matrix_coef,test):
     
     #VALORES PARA TESTEAR (el primer valor 1 es por defecto, no se puede modificar!)
@@ -18,14 +33,15 @@ def predictDatos(matrix_coef,test):
         for j in range (320):
             x_test[i+1][j]=(x_test[i+1][j]-min[i])/(max[i]-min[i])
     x_test=np.matrix(x_test)
-    Y1=np.matmul( matrix_coef.T , x_test)   
-    print(Y1*(max[-1]-min[-1])+min[-1])
+    Y1=np.matmul( matrix_coef.T , x_test)
+    datos=Y1*(max[-1]-min[-1])+min[-1]
+    return datos
     
     
     
 predict= pd.read_csv("predict.csv")
 data = pd.read_csv("winequality.csv")
-
+quality=predict["quality"].values
 fixed=predict["fixed acidity"].values
 volatile=predict["volatile acidity"].values
 citric=predict["citric acid"].values
@@ -90,7 +106,9 @@ matrix_inversa=np.linalg.inv(np.matmul( xtrain_matrixT , xtrain_matrix ))
 f=np.matmul( matrix_inversa , xtrain_matrixT )
 matrix_coeficientes=np.matmul( f , out_train_matrix)    
 
-predictDatos(matrix_coeficientes,x_test2)
+matrizDatos=predictDatos(matrix_coeficientes,x_test2)
+escribir(matrizDatos.tolist(),quality.tolist())
+
 
 
     
