@@ -24,6 +24,7 @@ def predictDatos(matrix_coef,test):
     
     
 predict= pd.read_csv("predict.csv")
+print(predict)
 data = pd.read_csv("winequality.csv")
 
 fixed=predict["fixed acidity"].values
@@ -37,8 +38,8 @@ density=predict["density"].values
 pH=predict["pH"].values
 sulphates=predict["sulphates"].values
 alcohol=predict["alcohol"].values
-unos=[1,1,1,1,1,1,1,1]
-x_test2=[unos,fixed.tolist(),volatile.tolist(),citric.tolist(),residual.tolist(),chlorides.tolist(),free.tolist(),total.tolist(),density.tolist(),pH.tolist(),sulphates.tolist(),alcohol.tolist()]
+unos=predict["unos"].values
+x_test2=[unos.tolist(),fixed.tolist(),volatile.tolist(),citric.tolist(),residual.tolist(),chlorides.tolist(),free.tolist(),total.tolist(),density.tolist(),pH.tolist(),sulphates.tolist(),alcohol.tolist()]
 print(x_test2)
 
 #valores maximos de cada columna
