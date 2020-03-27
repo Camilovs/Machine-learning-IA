@@ -9,29 +9,21 @@ import numpy as np
 from numpy.linalg import inv
 
 
-def predictDatos(matrix_coef, test):
-    dimension = test.shape      
-    print(test[0])
+def predictDatos(matrix_coef):
+    
     #VALORES PARA TESTEAR (el primer valor 1 es por defecto, no se puede modificar!)
     x_test = [[1], [7.4], [0.7], [0.0], [1.9], [0.076], [11.0], [34.0], 
               [0.9978], [3.51], [0.56], [9.4]]
+    
     for i in range(11):
         x_test[i+1][0]=(x_test[i+1][0]-min[i])/(max[i]-min[i])
-        
-    for j in range(dimension[0]):
-        for n in range(dimension[1]):           
-            test[j+1][n]=(test[j+1][n]-min[j])/(max[j]-min[j])
-           
-    x_test=np.matrix(x_test)   
+    x_test=np.matrix(x_test)
     Y1=np.matmul( matrix_coef.T , x_test)   
     print(Y1*(max[-1]-min[-1])+min[-1])
     
     
     
 data = pd.read_csv("winequality.csv")
-test = pd.read_csv("test.csv")
-quality_teorica = test['quality'].values
-
 #valores maximos de cada columna
 max= [data[c].max() for c in data.columns] 
 #valores minimos de cada columna
@@ -58,11 +50,11 @@ dimension_data=data.shape
 for i in range(dimension_data[0]):                      
     data_train_values.append((data_values[i][:-1]).tolist())
     out_train_values.append(data_values[i][-1])    
- 
+    
 #print(data_train)
 
 #matriz de unos
-matrix_ones=np.ones((1298,1))
+matrix_ones=np.ones((1599,1))
 #b=np.matrix(x_train)
 
 #matriz de datos de entrenamiento
@@ -73,21 +65,13 @@ xtrain_matrixT=xtrain_matrix.T #Transpuesta
 #matrix de datos de salida
 out_train_matrix = np.matrix(out_train_values)
 out_train_matrix = out_train_matrix.T #Transpuesta
-
+print(out_train_matrix)
 #Matrix inversa
 matrix_inversa=np.linalg.inv(np.matmul( xtrain_matrixT , xtrain_matrix ))
 
 f=np.matmul( matrix_inversa , xtrain_matrixT )
 matrix_coeficientes=np.matmul( f , out_train_matrix)    
 
-dimension_test = test.shape
-data_test=[]
-
-for i in range(dimension_test[0]):
-    data_test.append((data_values[i][:-1]).tolist())
-    
-print(data_test)
-data_test = np.matrix(data_test)
-predictDatos(matrix_coeficientes, data_test)
+predictDatos(matrix_coeficientes)
 
     
